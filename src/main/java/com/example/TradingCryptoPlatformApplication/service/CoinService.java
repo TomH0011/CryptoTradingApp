@@ -7,16 +7,16 @@ import java.util.List;
 public interface CoinService {
     List<Coin> getCoinList(int page) throws Exception;
 
-    String GetMarketChart(String coinId, int days);
+    String getMarketChart(String coinId, int days) throws Exception;
 
-    String getCoinDetails(String coinId);
+    String getCoinDetails(String coinId) throws Exception;
 
-    Coin findById(String coinId);
+    Coin findById(String coinId) throws Exception;
 
-    String searchCoin(String keyword);
+    String searchCoin(String keyword) throws Exception;
 
-    String getTop50CoinByMarketCapRank();
+    String getTop50CoinByMarketCapRank() throws Exception;
 
-    String getTradingCoins();
+    String getTradingCoins() throws Exception;
 
 }

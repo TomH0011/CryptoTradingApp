@@ -1,2 +1,11 @@
-package com.example.TradingCryptoPlatformApplication.repository;public interface OrderRepository {
+package com.example.TradingCryptoPlatformApplication.repository;
+
+import com.example.TradingCryptoPlatformApplication.model.Order;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface OrderRepository extends JpaRepository<Order, Long> {
+
+    List<Order> findByUserId(Long userId);
 }
