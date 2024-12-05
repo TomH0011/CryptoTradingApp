@@ -12,12 +12,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.List;
 
+@Component
 public class JwtTokenValidator extends OncePerRequestFilter {
 
     @Override
@@ -33,7 +35,9 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 
             // Now try to validate the JWT
             try{
-                SecretKey key = Keys.hmacShaKeyFor(com.example.TradingCryptoPlatformApplication.config.JwtConstant.SECRET_KEY.getBytes());
+                SecretKey key = Keys.hmacShaKeyFor(JwtConstant
+                                .SECRET_KEY
+                                .getBytes());
 
                 Claims claims = Jwts.parserBuilder()
                         .setSigningKey(key)
@@ -45,7 +49,8 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 
                 String authorities=String.valueOf(claims.get("authorities"));
 
-                List<GrantedAuthority> authoritiesList= AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
+                List<GrantedAuthority> authoritiesList= AuthorityUtils
+                        .commaSeparatedStringToAuthorityList(authorities);
 
                 Authentication auth=new UsernamePasswordAuthenticationToken(
                         email,

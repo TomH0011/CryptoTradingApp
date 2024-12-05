@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.example.TradingCryptoPlatformApplication.domain.USER_ROLE;
 import jakarta.persistence.*;
 import lombok.Data;
+import com.example.TradingCryptoPlatformApplication.model.TwoFactorAuth;
 
 @Entity
 @Data
@@ -19,8 +20,7 @@ public class User {
     private String password;
 
     @Embedded
-    private com.example.TradingCryptoPlatformApplication.model.TwoFactorAuth twoFactorAuth=
-            new com.example.TradingCryptoPlatformApplication.model.TwoFactorAuth();
+    private TwoFactorAuth twoFactorAuth = new TwoFactorAuth();
 
     // Give different roles to different users i.e admin customer
     private USER_ROLE role = USER_ROLE.ROLE_CUSTOMER;

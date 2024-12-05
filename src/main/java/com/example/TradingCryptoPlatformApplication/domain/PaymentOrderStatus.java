@@ -1,2 +1,7 @@
-package com.example.TradingCryptoPlatformApplication.domain;public enum PaymentOrderStatus {
+package com.example.TradingCryptoPlatformApplication.domain;
+
+public enum PaymentOrderStatus {
+    PENDING,
+    SUCCESS,
+    FAILED
 }

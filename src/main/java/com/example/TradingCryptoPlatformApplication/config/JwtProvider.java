@@ -11,10 +11,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import com.example.TradingCryptoPlatformApplication.config.JwtConstant;
 
 public class JwtProvider {
 
-    private static SecretKey key = Keys.hmacShaKeyFor(com.example.TradingCryptoPlatformApplication.config.JwtConstant.SECRET_KEY.getBytes());
+    private static SecretKey key = Keys
+            .hmacShaKeyFor
+                    (com.example.TradingCryptoPlatformApplication.config.JwtConstant.SECRET_KEY
+                            .getBytes());
 
     public static String generateToken(Authentication auth) {
         Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
@@ -31,7 +35,12 @@ public class JwtProvider {
     }
 
     public static String getEmailFromToken(String token) {
-        token=token.substring(7);
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);  // Remove 'Bearer ' prefix
+        }
+        if (token == null || token.isEmpty()) {
+            throw new IllegalArgumentException("Invalid token");
+        }
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
@@ -43,6 +52,9 @@ public class JwtProvider {
     }
 
     private static String populateAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        if (authorities == null || authorities.isEmpty()) {
+            return ""; // Handle empty authorities gracefully
+        }
         Set<String> auth=new HashSet<>();
         for(GrantedAuthority  ga:authorities){
             auth.add(ga.getAuthority());

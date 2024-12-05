@@ -53,7 +53,7 @@ public class AuthController {
         newUser.setFullName(user.getFullName());
 
         // Save the data to database
-//        User savedUser = userRepository.save(newUser);
+        userRepository.save(newUser);
 
 
         Authentication auth=new UsernamePasswordAuthenticationToken(
@@ -65,7 +65,7 @@ public class AuthController {
 
         String jwt = JwtProvider.generateToken(auth);
 
-//        User authuser =userRepository.findByEmail(user.getEmail());
+        userRepository.findByEmail(user.getEmail());
 
         AuthResponse res = new AuthResponse();
         res.setJwt(jwt);

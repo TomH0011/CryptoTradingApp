@@ -36,7 +36,7 @@ public class UserController {
     private ForgotPasswordService forgotPasswordService;
 
 
-    @PostMapping("/api/users/profile")
+    @GetMapping("/api/users/profile")
     public ResponseEntity<User> getUserProfile(@RequestHeader("Authorization") String jwt) {
         User user=userService.findUserProfileByJwt(jwt);
 
