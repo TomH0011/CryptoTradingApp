@@ -18,7 +18,7 @@ public class Watchlist {
     @OneToOne
     private User user;
 
-    // many watch list has many coin
+    // Many watch list has many coin
     @ManyToMany
     private List<Coin> coins = new ArrayList<Coin>();
 }

@@ -117,38 +117,33 @@ public class OrderServiceImpl implements OrderService{
                 coin.getId());
 
         double buyPrice = assetToSell.getBuyPrice();
-        if (assetToSell!=null) {
-            OrderItem orderItem = createOrderItem(
-                    coin,
-                    quantity,
-                    buyPrice,
-                    sellPrice);
+        OrderItem orderItem = createOrderItem(
+                coin,
+                quantity,
+                buyPrice,
+                sellPrice);
 
 
+        Order order = createOrder(user, orderItem, OrderType.SELL);
+        orderItem.setOrder(order);
 
+        if (assetToSell.getQuantity() >= quantity) {
 
-            Order order = createOrder(user, orderItem, OrderType.SELL);
-            orderItem.setOrder(order);
+            walletService.payOrderPayment(order, user);
+            order.setStatus(OrderStatus.SUCCESS);
+            order.setOrderType(OrderType.SELL);
+            Order savedOrder = orderRepository.save(order);
 
-            if (assetToSell.getQuantity() >= quantity) {
+            Asset updatedAsset = assetService.updateAsset(
+                    assetToSell.getId(), -quantity
+            );
 
-                walletService.payOrderPayment(order, user);
-                order.setStatus(OrderStatus.SUCCESS);
-                order.setOrderType(OrderType.SELL);
-                Order savedOrder = orderRepository.save(order);
-
-                Asset updatedAsset = assetService.updateAsset(
-                        assetToSell.getId(), -quantity
-                );
-
-                if (updatedAsset.getQuantity() * coin.getCurrentPrice() <= 1) {
-                    assetService.deleteAsset(updatedAsset.getId());
-                }
-                return savedOrder;
+            if (updatedAsset.getQuantity() * coin.getCurrentPrice() <= 1) {
+                assetService.deleteAsset(updatedAsset.getId());
             }
-            throw new Exception("Insufficient Qauntity To Sell");
+            return savedOrder;
         }
-        throw new Exception("Asset Not Found");
+        throw new Exception("Insufficient Qauntity To Sell");
     }
 
 

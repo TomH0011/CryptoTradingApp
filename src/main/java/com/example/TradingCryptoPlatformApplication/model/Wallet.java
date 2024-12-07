@@ -16,5 +16,6 @@ public class Wallet {
     @OneToOne
     private User user;
 
+    // Otherwise we get balance is null which causes issues when transferring funds
     private BigDecimal balance=BigDecimal.ZERO;
 }
