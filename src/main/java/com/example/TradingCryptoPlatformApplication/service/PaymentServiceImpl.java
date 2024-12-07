@@ -20,7 +20,7 @@ public class PaymentServiceImpl implements PaymentService{
     @Autowired
     private PaymentServiceRepository paymentServiceRepository;
 
-    @Value("${stripe.api.key}")
+    @Value("${stripe.api.key2}")
     private  String stripeSecretKey;
 
 
@@ -44,6 +44,9 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     public Boolean proceedPaymentOrder(PaymentOrder paymentOrder, String paymentId) {
+        if (paymentOrder.getStatus()==null){
+            paymentOrder.setStatus(PaymentOrderStatus.PENDING);
+        }
         if (paymentOrder.getStatus().equals(PaymentOrderStatus.PENDING)){
             paymentOrder.setStatus(PaymentOrderStatus.SUCCESS);
             paymentServiceRepository.save(paymentOrder);

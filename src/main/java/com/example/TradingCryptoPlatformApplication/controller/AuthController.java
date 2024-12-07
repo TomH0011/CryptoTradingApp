@@ -9,6 +9,7 @@ import com.example.TradingCryptoPlatformApplication.response.AuthResponse;
 import com.example.TradingCryptoPlatformApplication.service.CustomUserDetailsService;
 import com.example.TradingCryptoPlatformApplication.service.EmailService;
 import com.example.TradingCryptoPlatformApplication.service.TwoFactorOtpService;
+import com.example.TradingCryptoPlatformApplication.service.WatchlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,9 @@ public class AuthController {
     private TwoFactorOtpService twoFactorOtpService;
 
     @Autowired
+    private WatchlistService watchlistService;
+
+    @Autowired
     private EmailService emailService;
 
     @PostMapping("/signup")
@@ -53,7 +57,10 @@ public class AuthController {
         newUser.setFullName(user.getFullName());
 
         // Save the data to database
-        userRepository.save(newUser);
+        User savedUser = userRepository.save(newUser);
+
+        // Automatically create a new watchlist
+        watchlistService.createWatchlist(savedUser);
 
 
         Authentication auth=new UsernamePasswordAuthenticationToken(

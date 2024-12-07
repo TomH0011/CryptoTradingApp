@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import com.example.TradingCryptoPlatformApplication.model.User;
 
 @RestController
-@RequestMapping("/api")
 public class PaymentController {
 
     @Autowired

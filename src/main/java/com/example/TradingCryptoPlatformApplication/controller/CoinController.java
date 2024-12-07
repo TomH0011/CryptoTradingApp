@@ -2,7 +2,6 @@ package com.example.TradingCryptoPlatformApplication.controller;
 
 import com.example.TradingCryptoPlatformApplication.model.Coin;
 import com.example.TradingCryptoPlatformApplication.service.CoinService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class CoinController {
     private ObjectMapper objectMapper;
 
     @GetMapping
-    ResponseEntity<List<Coin>> getCoinList(@RequestParam("page") int page) throws Exception {
+    ResponseEntity<List<Coin>> getCoinList(@RequestParam(required = false, name = "page") int page) throws Exception {
         List<Coin> coins = coinService.getCoinList(page);
         return new ResponseEntity<>(coins, HttpStatus.ACCEPTED);
     }
@@ -53,9 +52,9 @@ public class CoinController {
         return new ResponseEntity<>(jsonNode, HttpStatus.OK);
     }
 
-    @GetMapping("/trading")
-    ResponseEntity<JsonNode> getTradingCoin() throws Exception {
-        String coin = coinService.getTradingCoins();
+    @GetMapping("/trending")
+    ResponseEntity<JsonNode> getTrendingCoin() throws Exception {
+        String coin = coinService.getTrendingCoins();
         JsonNode jsonNode = objectMapper.readTree(coin);
         return new ResponseEntity<>(jsonNode, HttpStatus.OK);
     }
